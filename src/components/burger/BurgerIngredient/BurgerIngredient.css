@@ -21,7 +21,8 @@
     width: 10%;
     height: 15%;
     position: absolute;
-    background-color: white;
+    /* background-color: rgb(204, 40, 40); */
+    background-color:white;
     left: 30%;
     top: 50%;
     border-radius: 40%;

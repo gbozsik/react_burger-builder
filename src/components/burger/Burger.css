@@ -2,10 +2,16 @@
     width: 100%;
     margin: auto;
     height: 250px;
-    /* overflow: scroll; */
+    overflow: scroll;
+    /* overflow: hidden; */
     text-align: center;
     font-weight: bold;
     font-size: 1.2rem;   
+}
+
+::-webkit-scrollbar {
+    width: 5px;
+    background: transparent; /* make scrollbar transparent */
 }
 
 @media (min-width: 300px) and (min-height: 400px) {
