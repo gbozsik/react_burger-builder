@@ -6,7 +6,7 @@ import BackDrop from '../backDrop/BackDrop'
 
 const modal = (props) => (
     <Aux>
-        <BackDrop modalClosed={props.closeBackDrop} show={props.show} />
+        <BackDrop clicked={props.closeBackDrop} show={props.show} />
         <div className={classes.Modal}
             style={{
                 transform: props.show ? 'translateY(0)' : 'translateY(-100vh)',
