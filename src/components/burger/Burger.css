@@ -3,7 +3,6 @@
     margin: auto;
     height: 250px;
     overflow: scroll;
-    /* overflow: hidden; */
     text-align: center;
     font-weight: bold;
     font-size: 1.2rem;   
@@ -11,10 +10,10 @@
 
 ::-webkit-scrollbar {
     width: 5px;
-    background: transparent; /* make scrollbar transparent */
-}
+    background: transparent; /* make scrollbar transparent  */
+} 
 
-@media (min-width: 300px) and (min-height: 400px) {
+@media (min-width: 500px) and (min-height: 400px) {
     .Burger {
         width: 350px;
         height: 300px;

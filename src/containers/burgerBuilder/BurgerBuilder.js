@@ -9,6 +9,7 @@ import OrderSummary from '../../components/burger/orderSummary/OrderSummary'
 import Spinner from '../../UI/spinner/Spinner'
 import withErrorHandler from '../../hoc/wthErrorHandler/withErrorHandler'
 
+
 const INGREDIENT_PRICES = {
     salad: 0.5,
     bacon: 0.7,
