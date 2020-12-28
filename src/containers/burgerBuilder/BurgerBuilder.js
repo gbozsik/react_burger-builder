@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import Aux from '../../hoc/Aux'
 import axios from '../../axios-orders'
+import querystring from 'querystring';
 
 import Burger from '../../components/burger/Burger'
 import BuildControls from '../../components/burger/buildControls/BuildControls'
@@ -32,7 +33,7 @@ class BurgerBuilder extends Component {
         axios.get('https://react-burger-builder-44dfd.firebaseio.com/ingredients.json').then(respone => {
             this.setState({ ingredients: respone.data })
         }).catch(error => {
-            this.setState({error: true})
+            this.setState({ error: true })
         })
     }
 
@@ -81,27 +82,18 @@ class BurgerBuilder extends Component {
     }
 
     continuePurchase = () => {
-        this.setState({ loading: true })
-        const order = {
-            ingredients: this.state.ingredients,
-            price: this.state.totalPrice,
-            customer: {
-                name: 'Max',
-                addres: {
-                    street: 'street 1',
-                    zipCode: '235',
-                    contry: 'Germany'
-                },
-                email: 'email'
-            },
-            deliveryMethod: 'fastest'
+        this.setState({ purchasing: false })
+
+        const queryParams = []
+        for (let i in this.state.ingredients) {
+            queryParams.push(encodeURIComponent(i) + '=' + encodeURIComponent(this.state.ingredients[i]))
         }
-        axios.post('/orders.json', order).then(response => {
-            console.log(response)
-            this.setState({ loading: false, purchasing: false })
-        }).catch(error => {
-            console.log(error)
-            this.setState({ loading: false, purchasing: false })
+        queryParams.push('totalPrice=' + this.state.totalPrice)
+        const queryInString = queryParams.join('&')
+        this.props.history.push({
+            pathname: '/checkout',
+            // search: querystring.stringify(this.state.ingredients)})
+            search: '?' + queryInString
         })
     }
 
@@ -109,13 +101,9 @@ class BurgerBuilder extends Component {
         const disableInfo = {
             ...this.state.ingredients
         }
-        // let allIngredientsZero = true
 
         for (let key in disableInfo) {
             disableInfo[key] = disableInfo[key] <= 0
-            // if (disableInfo[key] <= 0) {
-            //     allIngredientsZero = false
-            // }
         }
 
         let orderSummary = null

@@ -1,8 +1,8 @@
 import React from 'react'
 
-import Burger from '../burger/Burger'
+import Burger from '../../burger/Burger'
 import classes from './CheckoutSummary.css'
-import Button from '../../UI/button/Button'
+import Button from '../../../UI/button/Button'
 
 
 const checkoutSummary = (props) => {
@@ -15,10 +15,10 @@ const checkoutSummary = (props) => {
         </div>
         <Button 
             btnType="Danger"
-            clicked>CANCEL</Button>
+            clicked={props.goBack}>CANCEL</Button>
         <Button 
             btnType="Success"
-            clicked>CONTINUE</Button>
+            clicked={props.purchase}>CONTINUE</Button>
     </div>)
 }
 
