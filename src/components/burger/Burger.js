@@ -5,7 +5,6 @@ import classes from './Burger.css'
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient'
 
 const burger = (props) => {
-    console.log('withRouter: ', props)
 
     // const query = new URLSearchParams(props.history.location.search)
 

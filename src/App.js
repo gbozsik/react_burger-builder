@@ -15,6 +15,7 @@ class App extends Component {
           {/* <BurgerBuilder /> */}
           {/* <Checkout /> */}
           <Switch>
+            <Route path='/checkout' component={Checkout} />
             <Route path='/orders' component={Orders} />
             <Route path='/' component={BurgerBuilder} />
           </Switch>
