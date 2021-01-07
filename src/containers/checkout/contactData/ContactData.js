@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
-import axios from '../../axios-orders'
 import { connect } from 'react-redux'
+import axios from '../../../axios-orders'
+import withErrorHandler from '../../../hoc/withErrorHandler/withErrorHandler'
 
-import Button from '../../UI/button/Button'
+import Button from '../../../UI/button/Button'
 import classes from './ContactData.css'
-import Spinner from '../../UI/spinner/Spinner'
-import Input from '../../UI/input/Input'
-import { elementType } from 'prop-types'
+import Spinner from '../../../UI/spinner/Spinner'
+import Input from '../../../UI/input/Input'
+import * as orderActionCreator from '../../../store/actions/index'
 
 class ContactData extends Component {
 
@@ -95,44 +96,49 @@ class ContactData extends Component {
 
     orderHandler = (event) => {
         event.preventDefault()
-        // console.log('totalPrice in ContactData: ', this.props.totalPrice)
-        this.setState({ loading: true })
+    
         const formData = {}
         for (let formIdentifierElement in this.state.orderForm) {
             formData[formIdentifierElement] = this.state.orderForm[formIdentifierElement].value
         }
-        console.log('formdata in orderHandler: ', formData)
+
         const order = {
             ingredients: this.props.ingred,
             price: this.props.totalPr,
             oderData: formData
-
         }
-        axios.post('/orders.json', order).then(response => {
-            console.log(response)
-            this.setState({ loading: false })
-            this.props.history.push('/')
-        }).catch(error => {
-            console.log(error)
-            this.setState({ loading: false })
-        })
+        this.props.onSendOrder(order)
     }
 
     checkValidity(value, rules) {
-        let isValid = true
-
+        let isValid = true;
+        if (!rules) {
+            return true;
+        }
+        
         if (rules.required) {
-            isValid = value.trim() !== '' && isValid
+            isValid = value.trim() !== '' && isValid;
         }
 
         if (rules.minLength) {
             isValid = value.length >= rules.minLength && isValid
         }
+
         if (rules.maxLength) {
             isValid = value.length <= rules.maxLength && isValid
         }
 
-        return isValid
+        if (rules.isEmail) {
+            const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+            isValid = pattern.test(value) && isValid
+        }
+
+        if (rules.isNumeric) {
+            const pattern = /^\d+$/;
+            isValid = pattern.test(value) && isValid
+        }
+
+        return isValid;
     }
 
     inputChangedHandler = (event, inputIdentifier) => {
@@ -184,13 +190,13 @@ class ContactData extends Component {
                 <Button btnType='Success' disabled={!this.state.formIsValid}>ORDER</Button>
             </form>
         )
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = (<Spinner />)
         }
 
         return (
             <div>
-                { form}
+                { form }
             </div>
         )
     }
@@ -198,9 +204,16 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ingred: state.ingredients,
-        totalPr: state.totalPrice
+        ingred: state.bbReducer.ingredients,
+        totalPr: state.bbReducer.totalPrice,
+        loading: state.oReducer.loading
     }
 }
 
-export default connect(mapStateToProps)(ContactData)
+const mapDispatchToProps = dispatch => {
+    return {
+        onSendOrder: (order) => dispatch(orderActionCreator.sendOrder(order))
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios))
