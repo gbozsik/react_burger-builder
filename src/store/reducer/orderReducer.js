@@ -1,11 +1,11 @@
-import * as actionTypes from '../actions/ActionsTypes'
+import * as actionTypes from '../actions/actionsTypes'
 import { updateObject } from '../Utility'
 
 const initialState = {
     orders: [],
     loading: false,
     purchsed: false,
-    error: ''
+    error: null
 }
 
 const reducer = (state = initialState, action) => {
@@ -32,7 +32,7 @@ const reducer = (state = initialState, action) => {
         case actionTypes.SEND_ORDER_FAILED:
             return updateObject(state, {
                 loading: false,
-                error: action.error.message
+                error: action.error
             })
         // return {
         //     ...state,

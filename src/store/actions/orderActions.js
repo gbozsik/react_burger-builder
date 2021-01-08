@@ -1,5 +1,5 @@
 import axios from '../../axios-orders'
-import * as actionTypes from './ActionsTypes'
+import * as actionTypes from './actionsTypes'
 
 export const sendOrderFailed = (error) => {
     return {
@@ -22,10 +22,10 @@ export const sendOrderStart = () => {
     }
 }
 
-export const sendOrder = (order) => {
+export const sendOrder = (order, token) => {
     return dispatch => {
         dispatch(sendOrderStart())
-        axios.post('/orders.json', order).then(response => {
+        axios.post('/orders.json?auth=' + token, order).then(response => {
             // this.props.history.push('/')
             console.log(response.data)
             dispatch(sendOrderSucces(response.data.name, order))
@@ -62,10 +62,10 @@ export const fetchOrdersFailed = (error) => {
     }
 }
 
-export const fetchOrders = () => {
+export const fetchOrders = (token) => {
     return dispatch => {
         dispatch(fetchOrdersStarted())
-        axios.get('/orders.json')
+        axios.get('/orders.json?auth=' + token)
             .then(res => {
                 const fetchedOrders = []
 
@@ -78,6 +78,7 @@ export const fetchOrders = () => {
                 dispatch(fetchOrdersSucces(res.data.name, fetchedOrders))
             })
             .catch(err => {
+                console.log('fetch orders error: ', err)
                 dispatch(fetchOrdersFailed(err))
             });
     }

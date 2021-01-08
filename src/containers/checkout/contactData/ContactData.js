@@ -107,7 +107,7 @@ class ContactData extends Component {
             price: this.props.totalPr,
             oderData: formData
         }
-        this.props.onSendOrder(order)
+        this.props.onSendOrder(order, this.props.token)
     }
 
     checkValidity(value, rules) {
@@ -206,13 +206,14 @@ const mapStateToProps = state => {
     return {
         ingred: state.bbReducer.ingredients,
         totalPr: state.bbReducer.totalPrice,
-        loading: state.oReducer.loading
+        loading: state.oReducer.loading,
+        token: state.authReducer.token
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onSendOrder: (order) => dispatch(orderActionCreator.sendOrder(order))
+        onSendOrder: (order, token) => dispatch(orderActionCreator.sendOrder(order, token))
     }
 }
 

@@ -2,10 +2,14 @@ export {
     addIngredient,
     removeIngredient,
     initIngredients,
-} from './BurgerBuilderActions'
+} from './burgerBuilderActions'
 
 export {
     sendOrder,
     initPurchase,
     fetchOrders
-} from './OrderActions'
+} from './orderActions'
+
+export {
+    auth
+} from './authActions'

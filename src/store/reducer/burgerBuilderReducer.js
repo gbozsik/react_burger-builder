@@ -1,4 +1,4 @@
-import * as actionTypes from '../actions/ActionsTypes'
+import * as actionTypes from '../actions/actionsTypes'
 import { updateObject } from '../Utility'
 
 const INGREDIENT_PRICES = {

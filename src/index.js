@@ -8,12 +8,14 @@ import './index.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import { BrowserRouter } from 'react-router-dom'
-import burgerBuilderReducer from './store/reducer/BurgerBuilderReducer'
-import orderReducer from './store/reducer/OrderReducer'
+import burgerBuilderReducer from './store/reducer/burgerBuilderReducer'
+import orderReducer from './store/reducer/orderReducer'
+import authReducer from './store/reducer/authReducer'
 
 const rootReducer = combineReducers({
     bbReducer: burgerBuilderReducer,
-    oReducer: orderReducer
+    oReducer: orderReducer,
+    authReducer: authReducer
 })
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
