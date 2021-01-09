@@ -31,7 +31,11 @@ class BurgerBuilder extends Component {
     }
 
     purchaseHandler = () => {
-        this.setState({ purchasing: true })
+        if (this.props.isAuthenticated) {
+            this.setState({ purchasing: true })
+        } else {
+            this.props.history.push('/auth')
+        }
     }
 
     purchaseCanncelHandler = () => {
@@ -42,6 +46,10 @@ class BurgerBuilder extends Component {
         this.props.onInitPuchase()
         this.props.history.push('/checkout')
     }
+
+    // redirectToLogin = () => {
+    //     this.props.history.push('/auth')
+    // }
 
     render() {
         const disableInfo = {
@@ -59,6 +67,7 @@ class BurgerBuilder extends Component {
             burger = <Aux>
                 <Burger ingredients={this.props.ingred} />
                 <BuildControls
+                    isAuth={this.props.isAuthenticated}
                     ingredientAdded={this.props.onAddingIngredient}
                     ingredientRemoved={this.props.onRemoveIngredient}
                     disable={disableInfo}
@@ -90,7 +99,8 @@ const mapStateToProps = state => {
         ingred: state.bbReducer.ingredients,
         totalPr: state.bbReducer.totalPrice,
         error: state.bbReducer.error,
-        purchased: state.oReducer.purchased
+        purchased: state.oReducer.purchased,
+        isAuthenticated: state.authReducer.token !== null
     }
 }
 

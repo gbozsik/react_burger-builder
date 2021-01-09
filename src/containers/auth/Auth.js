@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 
 import Input from '../../UI/input/Input'
 import Button from '../../UI/button/Button'
@@ -11,9 +12,9 @@ class Auth extends Component {
     state = {
         controls: {
             email: {
-                elemnetType: 'input',
+                elementType: 'input',
                 elementConfig: {
-                    typte: 'email',
+                    type: 'email',
                     placeholder: 'Mail address'
                 },
                 value: '',
@@ -25,9 +26,9 @@ class Auth extends Component {
                 touched: false
             },
             password: {
-                elemnetType: 'input',
+                elementType: 'input',
                 elementConfig: {
-                    typte: 'password',
+                    type: 'password',
                     placeholder: 'Password'
                 },
                 value: '',
@@ -37,7 +38,7 @@ class Auth extends Component {
                 },
                 valid: false,
                 touched: false
-            },
+            }
         },
         formIsValid: false,
         isSignup: false
@@ -145,8 +146,14 @@ class Auth extends Component {
             )
         }
 
+        let redirect = null
+        if (this.props.isAuthenticated){
+            redirect = <Redirect to='/'/>
+        }
+
         return (
             <div className={classes.Auth}>
+                {redirect}
                 {errorMessage}
                 {form}
                 <Button
@@ -160,7 +167,8 @@ class Auth extends Component {
 const mapStateToProps = state => {
     return {
         loading: state.authReducer.loading,
-        error: state.authReducer.error
+        error: state.authReducer.error,
+        isAuthenticated: state.authReducer.token !== null
     }
 }
 

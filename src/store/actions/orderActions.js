@@ -26,7 +26,6 @@ export const sendOrder = (order, token) => {
     return dispatch => {
         dispatch(sendOrderStart())
         axios.post('/orders.json?auth=' + token, order).then(response => {
-            // this.props.history.push('/')
             console.log(response.data)
             dispatch(sendOrderSucces(response.data.name, order))
         }).catch(error => {
