@@ -20,3 +20,5 @@ export const AUTH_FAILED = 'AUTH_FAILED'
 
 export const LOGOUT = 'LOGOUT'
 
+export const SET_ROUTE_TO_REDIRECT = 'SET_ROUTE_TO_REDIRECT'
+

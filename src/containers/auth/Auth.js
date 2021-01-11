@@ -44,6 +44,12 @@ class Auth extends Component {
         isSignup: false
     }
 
+    componentDidMount() {
+        if (!this.props.buildingBurger && this.props.routeToRedirect !== '/') {
+            this.props.onSetRoutToRedirect()
+        }
+    }
+
     inputChangedHandler = (event, controlName) => {
         const updatedControls = {
             ...this.state.controls,
@@ -148,7 +154,7 @@ class Auth extends Component {
 
         let redirect = null
         if (this.props.isAuthenticated){
-            redirect = <Redirect to='/'/>
+            redirect = <Redirect to={this.props.routeToRedirect}/>
         }
 
         return (
@@ -168,13 +174,16 @@ const mapStateToProps = state => {
     return {
         loading: state.authReducer.loading,
         error: state.authReducer.error,
-        isAuthenticated: state.authReducer.token !== null
+        isAuthenticated: state.authReducer.token !== null,
+        routeToRedirect: state.authReducer.routeToRedirect,
+        buildingBurger: state.bbReducer.building
     }
 }
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAuth: (email, password, url) => dispatch(actionCreator.auth(email, password, url))
+        onAuth: (email, password, url) => dispatch(actionCreator.auth(email, password, url)),
+        onSetRoutToRedirect: () => dispatch(actionCreator.setRouteToRedirect('/'))
     }
 }
 

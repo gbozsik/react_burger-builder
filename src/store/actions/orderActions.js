@@ -61,10 +61,13 @@ export const fetchOrdersFailed = (error) => {
     }
 }
 
-export const fetchOrders = (token) => {
+export const fetchOrders = (token, userId) => {
     return dispatch => {
         dispatch(fetchOrdersStarted())
-        axios.get('/orders.json?auth=' + token)
+        if (!token) {
+            token = localStorage.getItem('token')
+        }
+        axios.get('/orders.json?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"')
             .then(res => {
                 const fetchedOrders = []
 

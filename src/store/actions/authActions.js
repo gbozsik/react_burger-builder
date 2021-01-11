@@ -16,6 +16,9 @@ export const authSuccess = (token, userId) => {
 }
 
 export const logout = () => {
+    localStorage.removeItem('token')
+    localStorage.removeItem('expirationDate')
+    localStorage.removeItem('userId')
     return {
         type: actionTypes.LOGOUT
     }
@@ -52,12 +55,43 @@ export const auth = (email, password, isSignup) => {
 
         console.log('url: ', url)
         axios.post(url, authData).then(response => {
-            console.log('response: ', response.data)
+            const expirationDate = new Date(new Date().getTime() + response.data.expiresIn * 1000)
+            localStorage.setItem('token', response.data.idToken)
+            localStorage.setItem('expirationDate', expirationDate)
+            localStorage.setItem('userId', response.data.localId)
             dispatch(authSuccess(response.data.idToken, response.data.localId))
             dispatch(logoutExpiresIn(response.data.expiresIn))
         }).catch(err => {
             console.log('error', err.response)
             dispatch(authFailed(err.response.data.error))
         })
+    }
+}
+
+export const setRouteToRedirect = (path) => {
+    return {
+        type: actionTypes.SET_ROUTE_TO_REDIRECT,
+        path: path
+    }
+}
+
+export const checLoggedIn = () => {
+    return dispatch => {
+        const token = localStorage.getItem('token')
+        if (!token) {
+            dispatch(logout())
+        } else {
+            const exparitionDate = new Date(localStorage.getItem('expirationDate'))
+            console.log('exparitionDate', exparitionDate)
+            console.log('now: ', new Date())
+            if (exparitionDate >= new Date()) {
+                dispatch(authSuccess(token, localStorage.getItem('userId')))
+                console.log('exparitionDate.getSeconds(): ', exparitionDate.getMilliseconds())
+                console.log('new Date().getSeconds(): ', new Date().getMilliseconds())
+                dispatch(logoutExpiresIn((exparitionDate.getTime() - new Date().getTime()) / 1000))
+            } else {
+                dispatch(logout())
+            }
+        }
     }
 }

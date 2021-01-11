@@ -12,5 +12,7 @@ export {
 
 export {
     auth,
-    logout
+    logout,
+    setRouteToRedirect,
+    checLoggedIn
 } from './authActions'
