@@ -30,11 +30,14 @@ export const fetchIngredientsFailed = () => {
 }
 
 export const initIngredients = () => {
-    return dispatch => {
-        axios.get('https://react-burger-builder-44dfd.firebaseio.com/ingredients.json').then(respone => {
-            dispatch(setIngredients(respone.data))
-        }).catch(error => {
-            dispatch(fetchIngredientsFailed())
-        })
+    // return dispatch => {                                                 
+    //     axios.get('https://react-burger-builder-44dfd.firebaseio.com/ingredients.json').then(respone => {                  //moved to saga
+    //         dispatch(setIngredients(respone.data))
+    //     }).catch(error => {
+    //         dispatch(fetchIngredientsFailed())
+    //     })
+    // }
+    return {
+        type: actionTypes.INITIATE_INIT_INGREDIENTS
     }
 }

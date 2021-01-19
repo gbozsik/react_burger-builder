@@ -23,14 +23,19 @@ export const sendOrderStart = () => {
 }
 
 export const sendOrder = (order, token) => {
-    return dispatch => {
-        dispatch(sendOrderStart())
-        axios.post('/orders.json?auth=' + token, order).then(response => {
-            console.log(response.data)
-            dispatch(sendOrderSucces(response.data.name, order))
-        }).catch(error => {
-            dispatch(sendOrderFailed(error))
-        })
+    // return dispatch => {
+    //     dispatch(sendOrderStart())
+    //     axios.post('/orders.json?auth=' + token, order).then(response => {   //moved to saga
+    //         console.log(response.data)
+    //         dispatch(sendOrderSucces(response.data.name, order))
+    //     }).catch(error => {
+    //         dispatch(sendOrderFailed(error))
+    //     })
+    // }
+    return {
+        type: actionTypes.SEND_ORDER,
+        order: order,
+        token: token
     }
 }
 
@@ -62,26 +67,31 @@ export const fetchOrdersFailed = (error) => {
 }
 
 export const fetchOrders = (token, userId) => {
-    return dispatch => {
-        dispatch(fetchOrdersStarted())
-        if (!token) {
-            token = localStorage.getItem('token')
-        }
-        axios.get('/orders.json?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"')
-            .then(res => {
-                const fetchedOrders = []
+    // return dispatch => {
+    //     dispatch(fetchOrdersStarted())
+    //     if (!token) {
+    //         token = localStorage.getItem('token')
+    //     }
+    //     axios.get('/orders.json?auth=' + token + '&orderBy="userId"&equalTo="' + userId + '"')           // moved to saga
+    //         .then(res => {
+    //             const fetchedOrders = []
 
-                for (let key in res.data) {
-                    fetchedOrders.push({
-                        ...res.data[key],
-                        id: key
-                    });
-                }
-                dispatch(fetchOrdersSucces(res.data.name, fetchedOrders))
-            })
-            .catch(err => {
-                console.log('fetch orders error: ', err)
-                dispatch(fetchOrdersFailed(err))
-            });
+    //             for (let key in res.data) {
+    //                 fetchedOrders.push({
+    //                     ...res.data[key],
+    //                     id: key
+    //                 });
+    //             }
+    //             dispatch(fetchOrdersSucces(res.data.name, fetchedOrders))
+    //         })
+    //         .catch(err => {
+    //             console.log('fetch orders error: ', err)
+    //             dispatch(fetchOrdersFailed(err))
+    //         });
+    // }
+    return {
+        type: actionTypes.FETCH_ORDERS,
+        token: token,
+        userId: userId
     }
 }
